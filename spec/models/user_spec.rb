@@ -5,7 +5,8 @@ RSpec.describe User, type: :model do
   def valid_attributes(new_attributes = {}) 
     attributes = {first_name: "Noel",
                   last_name: "Bacani",
-                  email: "noel.bacani@gmail.com"}
+                  email: "noel.bacani@gmail.com",
+                  password: "abcd1234"}
     attributes.merge(new_attributes)
   end
 
@@ -32,8 +33,20 @@ RSpec.describe User, type: :model do
     it 'requires a valid email' do
       user = User.new(valid_attributes({email: 'not_a_valid_email'}))
       expect(user).to be_invalid
-
     end
   end
+
+  describe "Hasing the password" do
+    it 'generates a password digest if provided a password' do
+      user = User.new(valid_attributes)
+      user.save
+      expect(user.password_digest).to be
+    end
+  end
+
+  describe ".full_name" do
+    
+  end
+
 
 end
