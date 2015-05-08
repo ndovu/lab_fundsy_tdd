@@ -40,12 +40,21 @@ RSpec.describe User, type: :model do
     it 'generates a password digest if provided a password' do
       user = User.new(valid_attributes)
       user.save
+      # Relies on bcyrpt
       expect(user.password_digest).to be
     end
   end
 
   describe ".full_name" do
-    
+    it 'returns a concatenated full name if both the first and last name are provided' do
+      user = User.new(valid_attributes)
+      expect(user.full_name).to eq("#{valid_attributes[:first_name]} #{valid_attributes[:last_name]}")
+    end
+
+    it 'returns the first name only if only the first name is provided' do
+      user = User.new(valid_attributes({last_name: nil}))
+      expect(user.full_name).to eq("#{valid_attributes[:first_name]}")
+    end
   end
 
 
